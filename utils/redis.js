@@ -4,7 +4,7 @@ import { promisify } from 'util';
 class RedisClient {
   constructor() {
     this.client = createClient()
-    .on('error', err => console.log(err));
+      .on('error', (err) => console.log(err));
 
     this.getAsync = promisify(this.client.get).bind(this.client);
     this.setAsync = promisify(this.client.setex).bind(this.client);
@@ -18,16 +18,15 @@ class RedisClient {
   async get(key) {
     try {
       const value = await this.getAsync(key);
-      console.log(value);
+      return (value);
     } catch (err) {
-      console.log('There is a problem. This is the problem: ', err);
+      return ('There is a problem. This is the problem: ', err);
     }
   }
 
   async set(key, value, time) {
     try {
       await this.setAsync(key, time, value);
-      console.log(value);
     } catch (err) {
       console.log('There is a problem. This is the problem: ', err);
     }
