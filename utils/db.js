@@ -5,14 +5,14 @@ class DBSClient {
     this.host = process.env.DB_HOST || 'localhost';
     this.port = process.env.DB_PORT || 27017;
     this.database = process.env.DB_DATABASE || 'files_manager';
-    this.url = 'mongodb://' + this.host + ':' + this.port + '/' + this.database;
+    this.url = `mongodb://${this.host}:${this.port}/${this.database}`;
     this.client = new MongoClient(this.url);
   }
 
   async init() {
     try {
       await this.client.connect();
-    } catch (err){
+    } catch (err) {
       console.error('There is a problem. This is the problem: ', err);
       throw err;
     }
