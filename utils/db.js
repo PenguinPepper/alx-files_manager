@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-class DBSClient {
+export class DBSClient {
   constructor() {
     this.host = process.env.DB_HOST || 'localhost';
     this.port = process.env.DB_PORT || 27017;
@@ -47,4 +47,4 @@ class DBSClient {
 
 const dbClient = new DBSClient();
 dbClient.init().catch((err) => console.error('It didnt connect because: ', err));
-export default dbClient;
+export dbClient;
