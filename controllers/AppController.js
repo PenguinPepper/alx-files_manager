@@ -4,15 +4,17 @@ import redisClient from '../utils/redis';
 const AppController = {
   getStatus: (req, res) => {
     if (dbClient.isAlive && redisClient.isAlive) {
-      res.status(200).send({ "redis": true, "db": true });
+      res.status(200).json({ redis: true, db: true });
     }
   },
 
-  getStats: (req, res) => {
-    const users = dbClient.nbUsers().catch((err) => console.error('Nothing happened beacuse', err));
-    const files = dbClient.nbFiles().catch((err) => console.error('Nothing happened beacuse', err));
-    res.status(200).send({"users": users, "files": files });
-  }
-}
+  getStats: async (req, res) => {
+    const users = await dbClient.nbUsers()
+      .catch((err) => console.error('Nothing happened beacuse', err));
+    const files = await dbClient.nbFiles()
+      .catch((err) => console.error('Nothing happened beacuse', err));
+    res.status(200).json({ users, files });
+  },
+};
 
 module.exports = AppController;

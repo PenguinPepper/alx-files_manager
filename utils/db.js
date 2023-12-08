@@ -27,7 +27,7 @@ class DBSClient {
     const users = db.collection('users');
     try {
       const usersNum = await users.countDocuments();
-      return usersNum;
+      return parseInt(usersNum, 10);
     } catch (err) {
       return ('There is a problem. This is the problem: ', err);
     }
@@ -37,8 +37,8 @@ class DBSClient {
     const db = this.client.db(this.database);
     const files = db.collection('files');
     try {
-      const fileNum = await files.count();
-      return fileNum;
+      const fileNum = await files.countDocuments();
+      return parseInt(fileNum, 10);
     } catch (err) {
       return ('There is a problem. This is the problem: ', err);
     }
