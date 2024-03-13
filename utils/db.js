@@ -47,22 +47,16 @@ class DBSClient {
   async addUser(userObject) {
     const db = this.client.db(this.database);
     const users = db.collection('users');
-    try {
-      const newUser = await users.insertOne(userObject);
-      return newUser;
-    } catch (err) {
-      throw err;
-    }
+    const newUser = await users.insertOne(userObject);
+    return newUser.insertedId;
   }
 
   async findUser(email) {
-    let userInfo = []
     const db = this.client.db(this.database);
     const users = db.collection('users');
     try {
-      const exists = await users.find({"email": email});
-      userInfo.push(exists)
-      return userInfo;
+      const exists = await users.findOne({ email });
+      return exists;
     } catch (err) {
       return ('There is a problem. This is the problem: ', err);
     }
