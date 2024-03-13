@@ -6,6 +6,6 @@ const routes = Router();
 
 routes.get('/status', AppController.getStatus);
 routes.get('/stats', AppController.getStats);
-routes.post('/uers', UsersController.postNew);
+routes.post('/users', UsersController.postNew);
 
 export default routes;
