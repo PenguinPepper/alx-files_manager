@@ -1,5 +1,5 @@
-import dbClient from '../utils/db';
 import crypto from 'crypto';
+import dbClient from '../utils/db';
 
 function hashPassword(password) {
   const hash = crypto.createHash('sha1');
@@ -10,29 +10,29 @@ function hashPassword(password) {
 const UsersController = {
   postNew: async (request, response) => {
     if (!('email' in request.body)) {
-      response.status(400).send({"error":"Missing email"});
+      return response.status(400).send({ error: 'Missing email' });
     }
-    else if (!('password' in request.body)) {
-     response.status(400).send({"error":"Missing password"});
+    if (!('password' in request.body)) {
+      return response.status(400).send({ error: 'Missing password' });
+    }
+
+    try {
+      const { email } = request.body;
+      const userExists = await dbClient.findUser(email);
+      if (userExists) return response.status(400).send({ error: 'Already exist' });
+    } catch (err) {
+      console.log(err);
     }
     try {
       const { email, password } = request.body;
-      const userExists = await dbClient.findUser(email);
-      if (userExists.includes(email)) response.status(400).send({"error":"Already exist"});
-    } catch (err) {
-      console.log(err);
-    }
-    try{
-      const { email, password } = request.body;
-      let body = {};
-      body["email"] = email;
-      body["password"] = hashPassword(password);
+      const body = {};
+      body.email = email;
+      if (password) body.password = hashPassword(password);
       const newUser = await dbClient.addUser(body);
-      response.status(201).send(newUser);
+      return response.status(201).send({ id: newUser, email });
     } catch (err) {
-      console.log(err);
+      return (err);
     }
-
   },
 };
 
