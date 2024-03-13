@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, express } from 'express';
 import AppController from '../controllers/AppController';
 import UsersController from '../controllers/UsersController';
 
