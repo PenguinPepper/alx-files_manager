@@ -61,6 +61,17 @@ class DBSClient {
       return ('There is a problem. This is the problem: ', err);
     }
   }
+
+  async retrieveUser(email, password) {
+    const db = this.client.db(this.database);
+    const users = db.collection('users');
+    try {
+      const login = await user.findOne({"email": email, "password": password});
+      return login["_id"];
+    } catch (err) {
+      return ('There is a problem. This is the problem: ', err);
+    }
+  }
 }
 
 const dbClient = new DBSClient();
